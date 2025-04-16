@@ -68,6 +68,11 @@ app.use("/cart", cartRoutes);
 app.use("/profile", profileRoutes);
 app.use("/api", analyticRoutes);
 
+// Health check endpoint for Render
+app.get('/healthz', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Start Server
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
