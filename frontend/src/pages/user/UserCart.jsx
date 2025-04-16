@@ -17,7 +17,7 @@ const UserCart = () => {
       if (!userId) return;
       
       console.log("Fetching cart for user:", userId);
-      const response = await axios.get(`http://localhost:5000/cart/viewCart/${userId}`);
+      const response = await axios.get(`https://koreconnect.onrender.com/cart/viewCart/${userId}`);
       console.log("Cart response:", response.data);
       
       // Ensure each item has a quantity property (default to 1 if missing)
@@ -73,7 +73,7 @@ const UserCart = () => {
         try {
           console.log("Removing item from cart:", productId);
           // Remove item from cart on server
-          const removeResponse = await axios.post("http://localhost:5000/cart/remove", {
+          const removeResponse = await axios.post("https://koreconnect.onrender.com/cart/remove", {
             userId,
             itemId: productId.toString()
           });
@@ -121,7 +121,7 @@ const UserCart = () => {
         };
         console.log("Sending update request with data:", updateData);
         
-        const response = await axios.post("http://localhost:5000/cart/update", updateData);
+        const response = await axios.post("https://koreconnect.onrender.com/cart/update", updateData);
         
         console.log("Update response:", response.data);
       } catch (error) {
@@ -145,7 +145,7 @@ const UserCart = () => {
 
   const handleCheckout = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/cart/checkout/${userId}`);
+      const response = await axios.post(`https://koreconnect.onrender.com/cart/checkout/${userId}`);
       const orderData = response.data.order;
 
       localStorage.setItem("orderDetails", JSON.stringify(orderData));

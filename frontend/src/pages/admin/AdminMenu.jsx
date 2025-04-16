@@ -13,7 +13,7 @@ const AdminMenu = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/menus/getmenu")
+      .get("https://koreconnect.onrender.com/menus/getmenu")
       .then((response) => {
         setMenuItems(response.data);
         setLoading(false);
@@ -39,9 +39,9 @@ const AdminMenu = () => {
     
     // Handle relative paths
     if (imageUrl.startsWith("/")) {
-      return `http://localhost:5000${imageUrl}`;
+      return `https://koreconnect.onrender.com${imageUrl}`;
     } else {
-      return `http://localhost:5000/${imageUrl}`;
+      return `https://koreconnect.onrender.com/${imageUrl}`;
     }
   };
 

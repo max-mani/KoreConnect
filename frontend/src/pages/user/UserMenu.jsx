@@ -13,13 +13,13 @@ const UserMenu = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/menus/getmenu")
+      .get("https://koreconnect.onrender.com/menus/getmenu")
       .then((response) => setMenuItems(response.data))
       .catch((error) => console.error("Error fetching menu data:", error));
   }, []);
 
   const getImageUrl = (imageUrl) =>
-    imageUrl.startsWith("http") ? imageUrl : `http://localhost:5000${imageUrl}`;
+    imageUrl.startsWith("http") ? imageUrl : `https://koreconnect.onrender.com${imageUrl}`;
 
   const handleQuantityChange = (itemId, delta) => {
     setQuantities((prevQuantities) => {
@@ -58,7 +58,7 @@ const UserMenu = () => {
       
       console.log("Sending add to cart request:", requestData);
       
-      const response = await axios.post("http://localhost:5000/cart/add", requestData);
+      const response = await axios.post("https://koreconnect.onrender.com/cart/add", requestData);
 
       console.log("Add response:", response.data);
 

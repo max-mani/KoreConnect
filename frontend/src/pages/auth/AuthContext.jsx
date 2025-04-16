@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Call the backend to validate the token
       const response = await axios.post(
-        "http://localhost:5000/auth/verify-token", 
+        "https://koreconnect.onrender.com/auth/verify-token", 
         {}, 
         {
           headers: {
@@ -150,7 +150,7 @@ export const AuthProvider = ({ children }) => {
     // Register this session with backend
     try {
       await axios.post(
-        "http://localhost:5000/auth/register-session",
+        "https://koreconnect.onrender.com/auth/register-session",
         { userId: userData.id, expiresAt: expiresAt.toISOString() },
         { 
           headers: { 
@@ -173,7 +173,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         await axios.post(
-          "http://localhost:5000/auth/logout",
+          "https://koreconnect.onrender.com/auth/logout",
           {},
           { 
             headers: { 

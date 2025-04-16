@@ -153,7 +153,7 @@ const AdminOrderStatus = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/orders/${id}`)
+      .get(`https://koreconnect.onrender.com/orders/${id}`)
       .then((res) => {
         setOrder(res.data);
         setStatus(res.data.status);
@@ -163,7 +163,7 @@ const AdminOrderStatus = () => {
 
   const updateStatus = (newStatus) => {
     axios
-      .put(`http://localhost:5000/orders/${id}`, { status: newStatus })
+      .put(`https://koreconnect.onrender.com/orders/${id}`, { status: newStatus })
       .then(() => {
         setStatus(newStatus);
         alert("Order status updated successfully!");

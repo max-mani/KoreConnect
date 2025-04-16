@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   const fetchMenus = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5000/menus/getmenu");
+      const response = await axios.get("https://koreconnect.onrender.com/menus/getmenu");
       setMenus(response.data);
     } catch (error) {
       console.error("Error fetching menus:", error);
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:5000/menus/addmenu", formData, {
+      const response = await axios.post("https://koreconnect.onrender.com/menus/addmenu", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     if (!window.confirm("Are you sure you want to delete this menu?")) return;
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:5000/menus/${id}`);
+      await axios.delete(`https://koreconnect.onrender.com/menus/${id}`);
       fetchMenus();
       toast.success("Menu deleted successfully!");
     } catch (error) {
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
     if (!editingMenu) return;
     try {
       setLoading(true);
-      await axios.put(`http://localhost:5000/menus/${editingMenu._id}`, menuData);
+      await axios.put(`https://koreconnect.onrender.com/menus/${editingMenu._id}`, menuData);
       fetchMenus();
       setEditingMenu(null);
       setMenuData({ name: "", price: "", category: "", stock: "" });
@@ -318,7 +318,7 @@ const AdminDashboard = () => {
                             menu.imageUrl
                               ? menu.imageUrl.startsWith("http")
                                 ? menu.imageUrl
-                                : `http://localhost:5000${menu.imageUrl}`
+                                : `https://koreconnect.onrender.com${menu.imageUrl}`
                               : "https://via.placeholder.com/50"
                           }
                           alt={menu.name}

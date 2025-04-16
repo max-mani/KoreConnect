@@ -12,7 +12,7 @@ const UserDashboard = () => {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/menus/getmenu");
+        const response = await fetch("https://koreconnect.onrender.com/menus/getmenu");
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
         }
@@ -46,7 +46,7 @@ const UserDashboard = () => {
       return imageUrl;
     }
     // If it's a relative path, prepend the base URL
-    return `http://localhost:5000${imageUrl}`;
+    return `https://koreconnect.onrender.com${imageUrl}`;
   };
 
   // Custom styles that extend common styles

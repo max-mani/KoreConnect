@@ -23,7 +23,7 @@ const AdminAnalytics = () => {
     const fetchAnalytics = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/api/analytics");
+        const response = await fetch("https://koreconnect.onrender.com/api/analytics");
         if (!response.ok) {
           throw new Error("Failed to fetch analytics data");
         }

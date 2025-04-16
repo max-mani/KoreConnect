@@ -23,7 +23,7 @@ const UserProfile = () => {
     // Fetch user details
     const fetchUserData = async () => {
       try {
-        const userResponse = await axios.get(`http://localhost:5000/profile/users/${userId}`);
+        const userResponse = await axios.get(`https://koreconnect.onrender.com/profile/users/${userId}`);
         setUser(userResponse.data);
       } catch (err) {
         setUserError("Failed to load user details. Please try again.");
@@ -35,7 +35,7 @@ const UserProfile = () => {
     // Fetch orders separately
     const fetchOrders = async () => {
       try {
-        const ordersResponse = await axios.get(`http://localhost:5000/profile/orders/user/${userId}`);
+        const ordersResponse = await axios.get(`https://koreconnect.onrender.com/profile/orders/user/${userId}`);
         setOrders(ordersResponse.data);
       } catch (err) {
         setOrderError("Failed to load orders. Please try again.");

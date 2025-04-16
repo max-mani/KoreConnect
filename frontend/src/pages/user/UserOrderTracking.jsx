@@ -20,7 +20,7 @@ const UserOrderTracking = () => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:5000/orders/userOrder/${userId}`);
+        const response = await axios.get(`https://koreconnect.onrender.com/orders/userOrder/${userId}`);
         setOrders(response.data);
       } catch (err) {
         setError("Failed to fetch orders.");

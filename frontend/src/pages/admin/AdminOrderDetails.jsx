@@ -130,7 +130,7 @@ const AdminOrderDetails = () => {
 
   const fetchOrderDetails = () => {
     axios
-      .get(`http://localhost:5000/orders/getorder/${id}`)
+      .get(`https://koreconnect.onrender.com/orders/getorder/${id}`)
       .then((res) => {
         setOrder(res.data);
         setStatus(res.data.status);
@@ -140,7 +140,7 @@ const AdminOrderDetails = () => {
 
   const updateStatus = (newStatus) => {
     axios
-      .put(`http://localhost:5000/orders/updateStatus/${id}`, { status: newStatus })
+      .put(`https://koreconnect.onrender.com/orders/updateStatus/${id}`, { status: newStatus })
       .then(() => {
         setStatus(newStatus); // Update the status in the state
         setOrder((prevOrder) => ({ ...prevOrder, status: newStatus })); // Update the order object

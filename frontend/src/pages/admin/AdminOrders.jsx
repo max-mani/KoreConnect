@@ -8,7 +8,7 @@ const AdminOrders = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/orders")
+    fetch("https://koreconnect.onrender.com/orders")
       .then((response) => response.json())
       .then((data) => {
         setOrders(data);

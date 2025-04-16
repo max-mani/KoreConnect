@@ -27,7 +27,7 @@ const ProtectedRoute = () => {
       try {
         // Verify the token with the backend to confirm it's still valid
         const response = await axios.post(
-          "http://localhost:5000/auth/verify-token", 
+          "https://koreconnect.onrender.com/auth/verify-token", 
           { currentPath: location.pathname }, 
           {
             headers: {
