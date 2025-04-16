@@ -26,7 +26,11 @@ app.use(cookieParser());
 // CORS configuration - MUST come before routes
 const corsOptions = {
   origin: function(origin, callback) {
-    const allowedOrigins = ['http://localhost:5173', 'https://koreconnect.netlify.app'];
+    const allowedOrigins = [
+      'http://localhost:5173', 
+      'https://koreconnect.netlify.app',
+      'https://software-lalu.netlify.app'  // Add your new Netlify domain here
+    ];
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
