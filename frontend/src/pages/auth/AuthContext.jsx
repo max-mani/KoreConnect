@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 export const AuthContext = createContext(null);
 
@@ -16,8 +17,8 @@ export const AuthProvider = ({ children }) => {
     
     try {
       // Call the backend to validate the token
-      const response = await axios.post(
-        "https://koreconnect.onrender.com/auth/verify-token", 
+      const response = await axiosInstance.post(
+        "/auth/verify-token", 
         {}, 
         {
           headers: {
@@ -149,8 +150,8 @@ export const AuthProvider = ({ children }) => {
     
     // Register this session with backend
     try {
-      await axios.post(
-        "https://koreconnect.onrender.com/auth/register-session",
+      await axiosInstance.post(
+        "/auth/register-session",
         { userId: userData.id, expiresAt: expiresAt.toISOString() },
         { 
           headers: { 
@@ -172,8 +173,8 @@ export const AuthProvider = ({ children }) => {
     // Try to invalidate session on backend
     if (token) {
       try {
-        await axios.post(
-          "https://koreconnect.onrender.com/auth/logout",
+        await axiosInstance.post(
+          "/auth/logout",
           {},
           { 
             headers: { 
