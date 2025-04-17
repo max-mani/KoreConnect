@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "./UserLayout";
 import styles from "../../utils/commonStyles";
+import { placeholderUrls, handleImageError } from "../../utils/placeholderUtil";
 
 const UserDashboard = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -35,8 +36,8 @@ const UserDashboard = () => {
     fetchMenu();
   }, []);
 
-  // Fallback placeholder image URL
-  const placeholderImage = "https://via.placeholder.com/300x200?text=Image+Placeholder";
+  // Fallback placeholder image URL - using local placeholder now
+  const placeholderImage = placeholderUrls.menu;
 
   // Function to construct the image URL
   const getImageUrl = (imageUrl) => {
@@ -102,7 +103,7 @@ const UserDashboard = () => {
               src={getImageUrl(todaySpecial.imageUrl)}
               alt={todaySpecial.name}
               style={customStyles.specialImage}
-              onError={(e) => (e.target.src = placeholderImage)}
+              onError={(e) => handleImageError(e, "300x150", "Special Item")}
             />
             <h3 style={styles.subheading}>{todaySpecial.name}</h3>
             <p style={styles.description}>₹{todaySpecial.price.toFixed(2)}</p>
@@ -125,7 +126,7 @@ const UserDashboard = () => {
                   src={getImageUrl(item.imageUrl)}
                   alt={item.name}
                   style={styles.cardImage}
-                  onError={(e) => (e.target.src = placeholderImage)}
+                  onError={(e) => handleImageError(e, "300x200", "Menu Item")}
                 />
                 <h3 style={styles.subheading}>{item.name}</h3>
                 <p style={styles.description}>₹{item.price.toFixed(2)}</p>

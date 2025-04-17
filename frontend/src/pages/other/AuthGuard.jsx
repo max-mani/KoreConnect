@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (!authToken) {
-      navigate("/login", { replace: true });
+      navigate("/core/login", { replace: true });
     }
   }, [authToken, navigate]);
 

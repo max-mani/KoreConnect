@@ -16,11 +16,13 @@ import Profile from "./pages/user/UserProfile";
 import OrderTracking from "./pages/user/UserOrderTracking";
 import HomeAdmin from "./pages/admin/AdminDashboard";
 import MenuVendor from "./pages/admin/AdminMenu";
-import Dashboard from "./pages/admin/AdminOrders";
+import AdminOrders from "./pages/admin/AdminOrders";
 import OrderDetails from "./pages/admin/AdminOrderDetails";
 import UpdateOrderStatus from "./pages/admin/AdminOrderStatus";
 import OrderSuccess from "./pages/user/UserOrderSuccess";
 import Analytics from "./pages/admin/AdminAnalytics";
+import AdminAddMenu from "./pages/admin/AdminAddMenu";
+import AdminViewMenu from "./pages/admin/AdminViewMenu";
 
 
 function App() {
@@ -38,15 +40,19 @@ function App() {
       {/* Public Routes - Accessible without login */}
       <Route path="/" element={<LandingPage isAuthenticated={isAuthenticated} />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/core/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/core/signup" element={<Signup />} />
       
       {/* Protected Admin Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/core/admin/order/:id" element={<OrderDetails />} />
         <Route path="/core/admin/order/:id/update" element={<UpdateOrderStatus />} />
-        <Route path="/core/admin/dashboard" element={<Dashboard />} />
+        <Route path="/core/admin/orders" element={<AdminOrders />} />
         <Route path="/core/admin/vendormenu" element={<MenuVendor />} />
         <Route path="/core/admin/home" element={<HomeAdmin />} />
+        <Route path="/core/admin/addmenu" element={<AdminAddMenu />} />
+        <Route path="/core/admin/viewmenu" element={<AdminViewMenu />} />
         <Route path="/core/admin/analytics" element={<Analytics />} />
       </Route>
       

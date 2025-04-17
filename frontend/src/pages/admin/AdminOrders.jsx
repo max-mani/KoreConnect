@@ -23,27 +23,54 @@ const AdminOrders = () => {
 
   return (
     <Layout>
-      <div style={styles.contentWrapper}>
-        <h1 style={styles.title}>Order Management Dashboard</h1>
+      <div style={{
+        width: "100%", 
+        padding: "0 10px",
+        backgroundColor: "#f5f7fa",
+        overflow: "visible",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        boxSizing: "border-box"
+      }}>
+        <div style={{
+          width: "100%",
+          maxWidth: "800px",
+          backgroundColor: "#ffffff",
+          padding: "2rem",
+          borderRadius: "10px",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+          <h1 style={styles.title}>Order Management Dashboard</h1>
 
-        {/* Loading Indicator */}
-        {loading && <p style={styles.loadingText}>Loading orders...</p>}
+          {/* Loading Indicator */}
+          {loading && <p style={styles.loadingText}>Loading orders...</p>}
 
-        {/* Error Handling */}
-        {error && <p style={styles.errorText}>{error}</p>}
+          {/* Error Handling */}
+          {error && <p style={styles.errorText}>{error}</p>}
 
-        {/* Orders List */}
-        {!loading && !error && (
-          <div style={styles.orderList}>
-            {orders.length > 0 ? (
-              orders.map((order) => (
-                <OrderCard key={order._id} order={order} />
-              ))
-            ) : (
-              <p style={styles.noOrdersText}>No orders found</p>
-            )}
-          </div>
-        )}
+          {/* Orders List */}
+          {!loading && !error && (
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              width: "100%", 
+              alignItems: "center"
+            }}>
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <OrderCard key={order._id} order={order} />
+                ))
+              ) : (
+                <p style={styles.noOrdersText}>No orders found</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </Layout>
   );
@@ -61,6 +88,8 @@ const OrderCard = ({ order }) => {
         boxShadow: hovered
           ? "0 4px 12px rgba(0, 0, 0, 0.1)"
           : "0 2px 6px rgba(0, 0, 0, 0.05)",
+        width: "100%",
+        maxWidth: "700px"
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -74,16 +103,8 @@ const OrderCard = ({ order }) => {
   );
 };
 
-// Styles (Updated for proper alignment)
+// Styles (Updated for better centering and alignment)
 const styles = {
-  contentWrapper: {
-    width: "100%",
-    backgroundColor: "#ffffff",
-    padding: "2rem",
-    margin: "1.5rem",
-    borderRadius: "10px",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
-  },
   title: {
     fontSize: "2rem",
     fontWeight: "700",
@@ -95,6 +116,8 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
+    width: "100%",
+    alignItems: "center"
   },
   orderCard: {
     border: "1px solid #e8ecef",
@@ -102,6 +125,7 @@ const styles = {
     borderRadius: "8px",
     backgroundColor: "#ffffff",
     transition: "all 0.3s ease-in-out",
+    width: "100%"
   },
   orderText: {
     fontSize: "1.25rem",
@@ -129,6 +153,7 @@ const styles = {
     color: "#6e6e73",
     fontSize: "1rem",
     padding: "2rem 0",
+    width: "100%",
   },
   loadingText: {
     textAlign: "center",

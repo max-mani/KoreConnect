@@ -87,14 +87,28 @@ export const AuthProvider = ({ children }) => {
   };
   
   // Handle logout
-  const handleLogout = () => {
+  const handleLogout = (callback) => {
     // Clear all authentication data
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("sessionData");
+    localStorage.removeItem("authToken");
+    
+    // Clear cookies
     document.cookie = "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    
+    // Clear session storage
+    sessionStorage.clear();
+    
+    // Update state
     setUser(null);
     setIsAuthenticated(false);
+
+    // Execute callback if provided
+    if (typeof callback === 'function') {
+      callback();
+    }
   };
   
   useEffect(() => {
@@ -189,11 +203,10 @@ export const AuthProvider = ({ children }) => {
       }
     }
     
-    // Clear all authentication data locally
-    handleLogout();
-    
-    // Redirect to home page
-    navigate("/");
+    // Clear all authentication data locally and navigate to home
+    handleLogout(() => {
+      navigate("/", { replace: true });
+    });
   };
   
   return (

@@ -114,7 +114,7 @@ const UserMenu = () => {
       transition: "background-color 0.3s ease",
     },
     activeCategory: {
-      backgroundColor: "#ff6f61",
+      backgroundColor: "#225777",
       color: "white",
     },
     menuGrid: {

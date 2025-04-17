@@ -138,7 +138,7 @@ const ProtectedRoute = () => {
   
   // If authentication check is complete and user is not authenticated, redirect to login
   if (!isAuthenticated || !isValid) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/core/login" replace state={{ from: location.pathname }} />;
   }
   
   // If authenticated and verification complete, render the protected route

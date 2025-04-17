@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const { logout, isAuthenticated } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated);
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("token")); // Check token on component mount
-  }, []);
+    setIsLoggedIn(isAuthenticated); // Use isAuthenticated from AuthContext
+  }, [isAuthenticated]);
 
-  const handleAuthAction = () => {
+  const handleAuthAction = async () => {
     if (isLoggedIn) {
-      localStorage.removeItem("token"); // Remove token
+      await logout(); // Use the central logout function which now handles navigation
       setIsLoggedIn(false);
-      navigate("/"); // Redirect to home page
     } else {
-      navigate("/login"); // Redirect to login page
+      navigate("/core/login"); // Redirect to login page
     }
   };
 

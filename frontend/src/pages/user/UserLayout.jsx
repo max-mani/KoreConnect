@@ -1,41 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../utils/commonStyles";
 import logo from '../../assets/logo.webp';
+import { useAuth } from "../auth/AuthContext";
 
 const UserLayout = ({ children }) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const handleLogout = () => {
-    // Clear authentication data
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userId");
-    sessionStorage.clear();
-    // Redirect to the home page
-    navigate("/core/home", { replace: true });
-    // Prevent back navigation
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", function () {
-      navigate("/core/home", { replace: true });
-    });
+  const handleLogout = async () => {
+    // Use the central logout function from AuthContext which now handles navigation
+    await logout();
   };
 
   const navigateTo = (path) => {
     navigate(`/core/user/${path}`);
   };
 
-  // Adjusted container style to eliminate empty space
+  // Adjusted container style to accommodate fixed header and footer with responsive behavior
   const containerStyle = {
     ...styles.container,
     padding: 0,
     minHeight: "100vh",
-    height: "100%",
-    overflow: "hidden",
+    height: "auto", // Auto height to accommodate content
+    paddingTop: "70px", // Increased space for fixed header
+    paddingBottom: "45px", // Increased space for fixed footer
+    position: "relative", // For proper stacking
+    overflow: "auto", // Allow scrolling
+  };
+
+  // Navbar style with overflow handling
+  const navbarStyle = {
+    ...styles.navbar,
+    height: "auto", // Auto height to fit content
+    minHeight: "60px", // Minimum height
+    flexWrap: "wrap", // Allow wrapping
   };
 
   return (
     <div style={containerStyle}>
-      {/* Header with navigation buttons */}
-      <div style={styles.navbar}>
+      {/* Fixed Header with navigation buttons */}
+      <div style={navbarStyle}>
         <div style={styles.logoContainer}>
           <img src={logo} alt="Kore Connect Logo" style={styles.logo} />
           <h1 style={styles.brandName}>Kore Connect</h1>
@@ -55,8 +59,13 @@ const UserLayout = ({ children }) => {
         </div>
       </div>
       
-      {/* Content - directly render children without the empty main wrapper */}
+      {/* Content */}
       {children}
+      
+      {/* Fixed Footer */}
+      <footer style={styles.footer}>
+        © 2023 Kore Connect Food Ordering System. All rights reserved.
+      </footer>
     </div>
   );
 };
