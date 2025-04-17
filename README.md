@@ -98,4 +98,4 @@ This project is licensed under the MIT License.
 For any inquiries, please contact 19manikandan2005@gmail.com.
 ---
 
-Developed by **[max-mani](https://github.com/max-mani)** and Team Drone Landers.
+Developed by **[max-mani](https://github.com/max-mani)** and Team KoreConnect.
