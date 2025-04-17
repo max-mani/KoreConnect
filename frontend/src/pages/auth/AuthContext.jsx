@@ -8,6 +8,7 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [firstCheckDone, setFirstCheckDone] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   
@@ -37,7 +38,10 @@ export const AuthProvider = ({ children }) => {
   };
   
   const checkAuthStatus = async () => {
-    setIsLoading(true);
+    // Only show loading indicator on first check
+    if (!firstCheckDone) {
+      setIsLoading(true);
+    }
     
     try {
       const token = localStorage.getItem("token");
@@ -83,6 +87,9 @@ export const AuthProvider = ({ children }) => {
       }
     } finally {
       setIsLoading(false);
+      if (!firstCheckDone) {
+        setFirstCheckDone(true);
+      }
     }
   };
   
@@ -112,6 +119,7 @@ export const AuthProvider = ({ children }) => {
   };
   
   useEffect(() => {
+    // Initial auth check
     checkAuthStatus();
     
     // Set up periodic check (every 30 seconds)
@@ -184,29 +192,46 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     const token = localStorage.getItem("token");
     
-    // Try to invalidate session on backend
-    if (token) {
-      try {
-        await axiosInstance.post(
-          "/auth/logout",
-          {},
-          { 
-            headers: { 
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json"
-            },
-            withCredentials: true
-          }
-        );
-      } catch (error) {
-        console.error("Error during logout:", error);
-      }
+    // Set a flag to prevent multiple navigation attempts
+    const isNavigating = sessionStorage.getItem('isLoggingOut');
+    if (isNavigating === 'true') {
+      return; // Prevent multiple logout attempts
     }
     
-    // Clear all authentication data locally and navigate to home
-    handleLogout(() => {
+    // Set flag to indicate logout in progress
+    sessionStorage.setItem('isLoggingOut', 'true');
+    
+    try {
+      // Navigate to landing page
       navigate("/", { replace: true });
-    });
+      
+      // Try to invalidate session on backend
+      if (token) {
+        try {
+          await axiosInstance.post(
+            "/auth/logout",
+            {},
+            { 
+              headers: { 
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+              },
+              withCredentials: true
+            }
+          );
+        } catch (error) {
+          console.error("Error during logout:", error);
+        }
+      }
+      
+      // Clear all authentication data locally
+      handleLogout();
+    } finally {
+      // Clear the navigation flag after a short delay
+      setTimeout(() => {
+        sessionStorage.removeItem('isLoggingOut');
+      }, 500);
+    }
   };
   
   return (

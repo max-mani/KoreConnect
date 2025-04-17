@@ -13,6 +13,11 @@ function Navbar() {
 
   const handleAuthAction = async () => {
     if (isLoggedIn) {
+      // Prevent multiple logout attempts
+      if (sessionStorage.getItem('isLoggingOut') === 'true') {
+        return;
+      }
+      
       await logout(); // Use the central logout function which now handles navigation
       setIsLoggedIn(false);
     } else {

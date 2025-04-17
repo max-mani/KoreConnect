@@ -6,47 +6,63 @@ import styles from "../../utils/commonStyles";
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
-  const [loadingUser, setLoadingUser] = useState(true);
-  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(false);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [userError, setUserError] = useState(null);
   const [orderError, setOrderError] = useState(null);
 
   const userId = localStorage.getItem("userId"); // Get userId from localStorage
 
   useEffect(() => {
+    if (isFirstLoad) {
+      loadProfileData();
+      setIsFirstLoad(false);
+    }
+  }, [isFirstLoad]);
+
+  const loadProfileData = () => {
     if (!userId) {
       setUserError("User not found. Please log in.");
-      setLoadingUser(false);
       return;
     }
 
+    // Set loading states only on first load
+    if (isFirstLoad) {
+      setLoadingUser(true);
+      setLoadingOrders(true);
+    }
+
     // Fetch user details
-    const fetchUserData = async () => {
-      try {
-        const userResponse = await axios.get(`https://koreconnect.onrender.com/profile/users/${userId}`);
-        setUser(userResponse.data);
-      } catch (err) {
-        setUserError("Failed to load user details. Please try again.");
-      } finally {
-        setLoadingUser(false);
-      }
-    };
-
-    // Fetch orders separately
-    const fetchOrders = async () => {
-      try {
-        const ordersResponse = await axios.get(`https://koreconnect.onrender.com/profile/orders/user/${userId}`);
-        setOrders(ordersResponse.data);
-      } catch (err) {
-        setOrderError("Failed to load orders. Please try again.");
-      } finally {
-        setLoadingOrders(false);
-      }
-    };
-
     fetchUserData();
+    
+    // Fetch orders separately
     fetchOrders();
-  }, [userId]);
+  };
+
+  // Fetch user details
+  const fetchUserData = async () => {
+    try {
+      const userResponse = await axios.get(`https://koreconnect.onrender.com/profile/users/${userId}`);
+      setUser(userResponse.data);
+    } catch (err) {
+      setUserError("Failed to load user details. Please try again.");
+    } finally {
+      setLoadingUser(false);
+    }
+  };
+
+  // Fetch orders separately
+  const fetchOrders = async () => {
+    try {
+      const ordersResponse = await axios.get(`https://koreconnect.onrender.com/profile/orders/user/${userId}`);
+      setOrders(ordersResponse.data);
+    } catch (err) {
+      setOrderError("Failed to load orders. Please try again.");
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
 
   // Custom styles that extend common styles
   const customStyles = {

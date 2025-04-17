@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../../utils/commonStyles";
 import logo from '../../assets/logo.webp';
 import { useAuth } from "../auth/AuthContext";
+import { throttledNavigate } from "../../utils/navigationUtils";
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
@@ -10,10 +11,17 @@ const AdminLayout = ({ children }) => {
   const navigateTo = (path) => {
     // Clear any tab selection when navigating to other paths
     sessionStorage.removeItem('menuTab');
-    navigate(`/core/admin/${path}`);
+    
+    // Use throttled navigation to prevent flooding
+    throttledNavigate(navigate, `/core/admin/${path}`);
   };
 
   const handleLogout = async () => {
+    // Prevent multiple logout attempts
+    if (sessionStorage.getItem('isLoggingOut') === 'true') {
+      return;
+    }
+    
     // Use the central logout function from AuthContext which now handles navigation
     await logout();
   };
@@ -68,25 +76,6 @@ const AdminLayout = ({ children }) => {
     boxShadow: "0 -2px 4px rgba(0,0,0,0.1)",
   };
 
-  // Navbar button style with horizontal scroll
-  const navbarStyle = {
-    display: "flex", 
-    alignItems: "center", 
-    gap: "8px", 
-    flexWrap: "nowrap",
-    overflow: "auto",  // Enable horizontal scrolling
-    WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
-    msOverflowStyle: "none",  // Hide scrollbar in IE/Edge
-    scrollbarWidth: "none",   // Hide scrollbar in Firefox
-  };
-
-  // Hide scrollbar for Webkit browsers
-  const navbarStyleAfter = {
-    "::-webkit-scrollbar": {
-      display: "none",
-    }
-  };
-
   return (
     <div style={containerStyle}>
       {/* Fixed Header */}
@@ -95,15 +84,15 @@ const AdminLayout = ({ children }) => {
           <img src={logo} alt="Kore Connect Logo" style={styles.logo} />
           <h1 style={styles.brandName}>Kore Connect</h1>
         </div>
-        <div style={{...navbarStyle, ...navbarStyleAfter}}>
-          <button style={styles.dangerButton} onClick={() => navigateTo("home")}>Dashboard</button>
-          <button style={styles.dangerButton} onClick={() => navigateTo("addmenu")}>Add Menu</button>
-          <button style={styles.dangerButton} onClick={() => navigateTo("viewmenu")}>View Menu</button>
-          <button style={styles.dangerButton} onClick={() => navigateTo("orders")}>Orders</button>
-          <button style={styles.dangerButton} onClick={() => navigateTo("analytics")}>Analytics</button>
+        <div style={styles.navLinks}>
+          <button style={styles.navButton} onClick={() => navigateTo("home")}>Dashboard</button>
+          <button style={styles.navButton} onClick={() => navigateTo("addmenu")}>Add Menu</button>
+          <button style={styles.navButton} onClick={() => navigateTo("viewmenu")}>View Menu</button>
+          <button style={styles.navButton} onClick={() => navigateTo("orders")}>Orders</button>
+          <button style={styles.navButton} onClick={() => navigateTo("analytics")}>Analytics</button>
           <button
             onClick={handleLogout}
-            style={styles.dangerButton}
+            style={styles.navButton}
           >
             Logout
           </button>
@@ -117,7 +106,7 @@ const AdminLayout = ({ children }) => {
       
       {/* Fixed Footer */}
       <footer style={footerStyle}>
-        © 2023 Kore Connect Food Ordering System. All rights reserved.
+        © 2025 Kore Connect Food Ordering System. All rights reserved.
       </footer>
     </div>
   );

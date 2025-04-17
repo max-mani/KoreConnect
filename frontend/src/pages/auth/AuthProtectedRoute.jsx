@@ -2,16 +2,30 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
+import { isNavigationInProgress } from "../../utils/navigationUtils";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading, checkAuthStatus } = useAuth();
   const location = useLocation();
-  const [isVerifying, setIsVerifying] = useState(true);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [isValid, setIsValid] = useState(false);
   
   useEffect(() => {
-    const verifySession = async () => {
+    // Only show verification loading state on first load
+    if (isInitialLoad) {
       setIsVerifying(true);
+      setIsInitialLoad(false);
+      verifySession();
+    } else {
+      // For subsequent route changes, verify without showing loading state
+      verifySession(false);
+    }
+    
+    async function verifySession(showLoading = true) {
+      if (showLoading) {
+        setIsVerifying(true);
+      }
       
       // First check if we have auth data in local storage
       const token = localStorage.getItem("token");
@@ -58,13 +72,11 @@ const ProtectedRoute = () => {
       } finally {
         setIsVerifying(false);
       }
-    };
-    
-    verifySession();
+    }
   }, [location.pathname, checkAuthStatus]);
   
-  // Show loading state while checking
-  if (isLoading || isVerifying) {
+  // Show loading state while checking, but only on initial load
+  if ((isLoading && isInitialLoad) || isVerifying) {
     return (
       <div style={{ 
         display: 'flex', 
@@ -138,6 +150,18 @@ const ProtectedRoute = () => {
   
   // If authentication check is complete and user is not authenticated, redirect to login
   if (!isAuthenticated || !isValid) {
+    // Check if we're in the middle of a logout process
+    const isLoggingOut = sessionStorage.getItem('isLoggingOut');
+    
+    // Also check if navigation is in progress
+    const navInProgress = isNavigationInProgress();
+    
+    // If we're currently logging out or navigating elsewhere, don't redirect to login
+    if (isLoggingOut === 'true' || navInProgress) {
+      // Return null (nothing) while logout or navigation is in progress
+      return null;
+    }
+    
     return <Navigate to="/core/login" replace state={{ from: location.pathname }} />;
   }
   

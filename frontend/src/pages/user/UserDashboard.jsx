@@ -6,35 +6,42 @@ import { placeholderUrls, handleImageError } from "../../utils/placeholderUtil";
 const UserDashboard = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [todaySpecial, setTodaySpecial] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMenu = async () => {
-      try {
+    if (isFirstLoad) {
+      fetchMenu();
+      setIsFirstLoad(false);
+    }
+  }, [isFirstLoad]);
+
+  const fetchMenu = async () => {
+    try {
+      if (isFirstLoad) {
         setLoading(true);
-        const response = await fetch("https://koreconnect.onrender.com/menus/getmenu");
-        if (!response.ok) {
-          throw new Error("Failed to fetch menu items");
-        }
-        const data = await response.json();
-
-        // Shuffle and select random menu items
-        const shuffled = data.sort(() => 0.5 - Math.random());
-        const selectedItems = shuffled.slice(0, 3);
-        setMenuItems(selectedItems);
-
-        // Select a random item for Today's Special
-        setTodaySpecial(shuffled[0] || null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
       }
-    };
+      
+      const response = await fetch("https://koreconnect.onrender.com/menus/getmenu");
+      if (!response.ok) {
+        throw new Error("Failed to fetch menu items");
+      }
+      const data = await response.json();
 
-    fetchMenu();
-  }, []);
+      // Shuffle and select random menu items
+      const shuffled = data.sort(() => 0.5 - Math.random());
+      const selectedItems = shuffled.slice(0, 3);
+      setMenuItems(selectedItems);
+
+      // Select a random item for Today's Special
+      setTodaySpecial(shuffled[0] || null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fallback placeholder image URL - using local placeholder now
   const placeholderImage = placeholderUrls.menu;

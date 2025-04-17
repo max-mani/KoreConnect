@@ -165,7 +165,7 @@ const Contact = () => {
 
       {/* Footer */}
       <footer style={styles.footer}>
-        © 2023 Kore Connect Food Ordering System. All rights reserved.
+        © 2025 Kore Connect Food Ordering System. All rights reserved.
       </footer>
     </div>
   );

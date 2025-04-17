@@ -11,15 +11,22 @@ const AdminDashboard = () => {
     totalRevenue: 0,
     menuItems: 0
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchSummaryData();
-  }, []);
+    if (isFirstLoad) {
+      fetchSummaryData();
+      setIsFirstLoad(false);
+    }
+  }, [isFirstLoad]);
 
   const fetchSummaryData = async () => {
-    setLoading(true);
+    if (isFirstLoad) {
+      setLoading(true);
+    }
+    
     try {
       // Here you would typically fetch real data from your API
       // For demo purposes, we're using static data

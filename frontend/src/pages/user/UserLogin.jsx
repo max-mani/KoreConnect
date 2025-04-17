@@ -4,6 +4,7 @@ import styles from '../../utils/commonStyles';
 import { useAuth } from "../auth/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import logo from '../../assets/logo.webp';
+import { throttledNavigate } from "../../utils/navigationUtils";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ const UserLogin = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const referrer = location.state?.from || '/core/user/home';
-      navigate(referrer, { replace: true });
+      throttledNavigate(navigate, referrer, { replace: true });
     }
   }, [isAuthenticated, navigate, location.state]);
 
@@ -62,11 +63,11 @@ const UserLogin = () => {
       // Redirect based on role or previous location
       const referrer = location.state?.from;
       if (referrer) {
-        navigate(referrer, { replace: true });
+        throttledNavigate(navigate, referrer, { replace: true });
       } else if (role === "admin") {
-        navigate("/core/admin/home", { replace: true });
+        throttledNavigate(navigate, "/core/admin/home", { replace: true });
       } else {
-        navigate("/core/user/home", { replace: true });
+        throttledNavigate(navigate, "/core/user/home", { replace: true });
       }
     } catch (error) {
       console.error("Login Failed:", error);
@@ -121,10 +122,10 @@ const UserLogin = () => {
           <h1 style={styles.brandName}>Kore Connect</h1>
         </div>
         <div style={styles.navLinks}>
-          <button style={styles.navButton} onClick={() => navigate("/")}>Home</button>
-          <button style={styles.navButton} onClick={() => navigate("/core/login")}>Login</button>
-          <button style={styles.navButton} onClick={() => navigate("/core/signup")}>Signup</button>
-          <button style={styles.navButton} onClick={() => navigate("/core/contact")}>Contact</button>
+          <button style={styles.navButton} onClick={() => throttledNavigate(navigate, "/")}>Home</button>
+          <button style={styles.navButton} onClick={() => throttledNavigate(navigate, "/core/login")}>Login</button>
+          <button style={styles.navButton} onClick={() => throttledNavigate(navigate, "/core/signup")}>Signup</button>
+          <button style={styles.navButton} onClick={() => throttledNavigate(navigate, "/core/contact")}>Contact</button>
         </div>
       </div>
       
@@ -169,7 +170,7 @@ const UserLogin = () => {
       
       {/* Fixed Footer */}
       <footer style={styles.footer}>
-        © 2023 Kore Connect Food Ordering System. All rights reserved.
+        © 2025 Kore Connect Food Ordering System. All rights reserved.
       </footer>
     </div>
   );
