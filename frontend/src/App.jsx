@@ -35,18 +35,22 @@ function App() {
   
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public Routes - Accessible without login */}
       <Route path="/" element={<LandingPage isAuthenticated={isAuthenticated} />} />
-      <Route path="/core/login" element={<Login />} />
-      <Route path="/core/signup" element={<Signup />} />
-      <Route path="/core/admin/order/:id" element={<OrderDetails />} />
-      <Route path="/core/admin/order/:id/update" element={<UpdateOrderStatus />} />
-      <Route path="/core/admin/dashboard" element={<Dashboard />} />
-      <Route path="/core/admin/vendormenu" element={<MenuVendor />} />
-      <Route path="/core/admin/home" element={<HomeAdmin />} />
-      <Route path="/core/admin/analytics" element={<Analytics />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
       
-      {/* Protected Routes (Require Login) */}
+      {/* Protected Admin Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/core/admin/order/:id" element={<OrderDetails />} />
+        <Route path="/core/admin/order/:id/update" element={<UpdateOrderStatus />} />
+        <Route path="/core/admin/dashboard" element={<Dashboard />} />
+        <Route path="/core/admin/vendormenu" element={<MenuVendor />} />
+        <Route path="/core/admin/home" element={<HomeAdmin />} />
+        <Route path="/core/admin/analytics" element={<Analytics />} />
+      </Route>
+      
+      {/* Protected User Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/core/home" element={<LandingPage />} />
         <Route path="/core/menu" element={<Menu />} />

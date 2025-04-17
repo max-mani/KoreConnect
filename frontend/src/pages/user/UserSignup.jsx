@@ -37,7 +37,7 @@ const UserSignup = () => {
     try {
       const response = await axios.post("/auth/signup", { name, email, password, phone, city, state, role });
       alert(response.data.message);
-      navigate("/core/login");  
+      navigate("/login");  
     } catch (error) {
       console.error("Signup failed:", error.response?.data || error.message);
       setError(error.response?.data?.error || "Something went wrong.");
@@ -124,7 +124,7 @@ const UserSignup = () => {
         </form>
         <p style={{...styles.description, marginTop: "15px"}}>
           Already have an account?{" "}
-          <Link to="/core/login" style={{color: "#ff6f61", textDecoration: "none", fontWeight: "bold"}}>
+          <Link to="/login" style={{color: "#ff6f61", textDecoration: "none", fontWeight: "bold"}}>
             Login here
           </Link>
         </p>

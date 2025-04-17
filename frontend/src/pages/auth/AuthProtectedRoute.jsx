@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading, checkAuthStatus } = useAuth();
@@ -26,8 +26,8 @@ const ProtectedRoute = () => {
       
       try {
         // Verify the token with the backend to confirm it's still valid
-        const response = await axios.post(
-          "https://koreconnect.onrender.com/auth/verify-token", 
+        const response = await axiosInstance.post(
+          "/auth/verify-token", 
           { currentPath: location.pathname }, 
           {
             headers: {
@@ -72,32 +72,73 @@ const ProtectedRoute = () => {
         alignItems: 'center', 
         height: '100vh',
         flexDirection: 'column',
-        backgroundColor: '#f5f5f7'
+        backgroundColor: '#f8f9fa',
+        fontFamily: 'Arial, sans-serif'
       }}>
         <div style={{ 
-          width: '50px', 
-          height: '50px', 
-          border: '5px solid #e0e0e0',
-          borderTopColor: '#3498db',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
+          position: 'relative',
+          width: '80px',
+          height: '80px',
+          marginBottom: '20px'
+        }}>
+          {/* Outer spinning circle */}
+          <div style={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            border: '4px solid rgba(0, 0, 0, 0.1)',
+            borderTopColor: '#ff5722',
+            borderRadius: '50%',
+            animation: 'spin 1s ease-in-out infinite'
+          }} />
+          
+          {/* Inner spinning circle (opposite direction) */}
+          <div style={{ 
+            position: 'absolute',
+            top: '15px',
+            left: '15px',
+            width: '50px',
+            height: '50px',
+            border: '4px solid rgba(0, 0, 0, 0.1)',
+            borderTopColor: '#2196f3',
+            borderRadius: '50%',
+            animation: 'spin-reverse 1.2s linear infinite'
+          }} />
+        </div>
+        <h3 style={{ 
+          color: '#333', 
+          marginBottom: '5px',
+          fontWeight: 'bold'
+        }}>
+          Please wait
+        </h3>
+        <p style={{ 
+          color: '#666',
+          fontSize: '15px'
+        }}>
+          Securely authenticating your session...
+        </p>
         <style>
           {`
             @keyframes spin {
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
             }
+            @keyframes spin-reverse {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(-360deg); }
+            }
           `}
         </style>
-        <p style={{ marginTop: '20px', color: '#333' }}>Verifying your session...</p>
       </div>
     );
   }
   
   // If authentication check is complete and user is not authenticated, redirect to login
   if (!isAuthenticated || !isValid) {
-    return <Navigate to="/core/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
   
   // If authenticated and verification complete, render the protected route

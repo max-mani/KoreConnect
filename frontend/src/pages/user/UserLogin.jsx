@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import styles from '../../utils/commonStyles';
 import { useAuth } from "../auth/AuthContext";
+import axiosInstance from "../../utils/axiosInstance";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -46,8 +46,8 @@ const UserLogin = () => {
 
     try {
       // Set specific axios config for CORS with credentials
-      const response = await axios.post(
-        "https://koreconnect.onrender.com/auth/login", 
+      const response = await axiosInstance.post(
+        "/auth/login", 
         payload, 
         {
           headers: {
@@ -130,7 +130,7 @@ const UserLogin = () => {
       </form>
 
       <p>Don't have an account?</p>
-      <button onClick={() => navigate("/core/signup")} style={styles.successButton}>
+      <button onClick={() => navigate("/signup")} style={styles.successButton}>
         Sign Up
       </button>
 
